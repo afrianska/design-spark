@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node", // or "nodenext"
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es6",
+    "esModuleInterop": true,
+    "lib": ["es6"],
+    "strict": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/@figma"
+    ],
+    "skipLibCheck": true // Cannot augment module 'console' with value exports because it resolves to a non-module entity
+  }
+}
