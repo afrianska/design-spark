@@ -6,6 +6,7 @@
     flex-direction: column;
     align-items: center;
     background: var(--colors-base-white, #ffffff);
+    position: relative;
   }
 
   h1 {
@@ -24,7 +25,7 @@
 
   p {
     width: 100%;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     align-self: stretch;
     color: var(--colors-neutral-500, #737373);
     text-align: center;
@@ -63,19 +64,65 @@
   button:hover {
     background: var(--colors-blue-600, #1745a8);
   }
+
+  .type-spark {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 40px;
+    justify-content: end;
+    align-items: center;
+    border-radius: var(--sizes-rounded-md, 8px);
+    border: 0.5px solid var(--colors-neutral-500, #737373);
+    margin-bottom: 20px;
+  }
+
+  .type-spark select {
+    position: absolute;
+    z-index: 9;
+    width: 100%;
+    height: 100%;
+    appearance: none;
+    background: transparent;
+    padding-left: 12px;
+    border: none;
+    outline: none;
+  }
+
+  .type-spark select option {
+    padding: 10px;
+    cursor: pointer;
+  }
+
+  .type-spark svg {
+    position: relative;
+    z-index: 2;
+    right: 12px;
+  }
   
 </style>
 <div class="container">
   <h1>Design Spark</h1>
-  <p>Just like a spark. I wish I could be a plugin who give you random spark to trigger your mind to start exploring design product for your daily practice.</p>
-  <button id="get-random-lighter">Get Random Spark</button>
+  <p>Sparking your mind with raw idea to start exploring design product in your daily practice.</p>
+  <div class="type-spark">
+    <select name="type-spark" id="type-spark">
+      <option class="select-item" value="random">RANDOM</option>
+      <option class="select-item" value="screen">SCREEN</option>
+      <option class="select-item" value="mvp">MVP</option>
+    </select>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11.9999 17.7C11.6043 17.6944 11.2269 17.5327 10.9499 17.25L3.23242 9.54004L4.28992 8.48254L11.9999 16.2L19.7324 8.48254L20.7899 9.54004L13.0724 17.25C12.9326 17.3927 12.7657 17.506 12.5816 17.5832C12.3974 17.6605 12.1996 17.7002 11.9999 17.7V17.7Z" fill="black"/>
+    </svg>
+  </div>
+  
+  <button id="get-random-lighter">Get Spark</button>
 </div>
 
 <script>
   document.getElementById("get-random-lighter").onclick = () => {
-    let random = true;
+    let value = document.getElementById('type-spark').value;
 
-    parent.postMessage({pluginMessage: {random}}, '*');
+    parent.postMessage({pluginMessage: {value}}, '*');
   };
 
 

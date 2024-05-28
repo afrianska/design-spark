@@ -169,7 +169,7 @@ const businessModel = [
           }
 ];
 
-const insdustry = [
+const insdustries = [
   {
       "id" : 1,
       "industry" : "Food & Drink"
@@ -340,21 +340,38 @@ const insdustry = [
   }
 ];
 
-const devices = ['Web', 'Mobile/Phone', 'Tablet/Ipad'];
+const screens = [
+    {
+        "id" : 1,
+        "screen" : "Dashboard"
+    },
+    {
+        "id" : 2,
+        "screen": "Home"
+    },
+    {
+        "id" : 3,
+        "screen" : "Checkout"
+    },
+    {
+        "id" : 4,
+        "screen" : "Product"
+    }
+];
 
-// Runs this code if the plugin is run in Figma
-if (figma.editorType === 'figma') {
-  figma.showUI(__html__);
-  figma.ui.resize(300, 270);
-  
-  figma.ui.onmessage = async pluginMessage => {
-    // figma.ui.postMessage({type: 'data', businessModel});
+const devices = ['Web', 'Mobile App (IOS)', 'Mobile App (Android)', 'Tablet', 'Ipad'];
 
+async function loadRequirement() {
     // Load the font
     await figma.loadFontAsync({ family: "Inter", style: "Bold" });
+    await figma.loadFontAsync({ family: "Inter", style: "Medium" });
     await figma.loadFontAsync({ family: "Inter", style: "Regular" });
     await figma.loadFontAsync({ family: "Inter", style: "Light" });
     await figma.loadFontAsync({ family: "Inter", style: "Light Italic" });
+}
+
+async function resultScreen() {
+    await loadRequirement();
 
     // Get the current viewport center and zoom level
     const viewportCenter = figma.viewport.center;
@@ -365,79 +382,425 @@ if (figma.editorType === 'figma') {
     const viewportCenterY = viewportCenter.y * viewportZoom;
 
     const randomBusinessModel = businessModel[Math.floor(Math.random() * businessModel.length)];
-    const randomIndustry = insdustry[Math.floor(Math.random() * insdustry.length)];
+    const randomIndustry = insdustries[Math.floor(Math.random() * insdustries.length)];
     const randomDevice = devices[Math.floor(Math.random() * devices.length)];
+    const randomScreen = screens[Math.floor(Math.random() * screens.length)];
 
-    const frame = figma.createFrame();
-    frame.x = viewportCenterX;
-    frame.y = viewportCenterY;
-    frame.resize(384, frame.height);
-    frame.layoutMode = 'VERTICAL'; // or 'HORIZONTAL' based on your need
-    frame.primaryAxisSizingMode = 'AUTO'; // Adjust sizing mode
-    frame.counterAxisSizingMode = 'AUTO'; // Adjust sizing mode
-    frame.horizontalPadding = 28;
-    frame.verticalPadding = 28;
-    frame.itemSpacing = 24;
-    frame.fills = [{ type: 'SOLID', color: { r: 0.94, g: 0.97, b: 1 } }];
-    frame.name = 'A Random Spark';
+    const frameCard = figma.createFrame();
+    frameCard.resize(384, frameCard.height);
+    frameCard.layoutMode = 'VERTICAL'; // or 'HORIZONTAL' based on your need
+    frameCard.primaryAxisSizingMode = 'AUTO'; // Adjust sizing mode
+    frameCard.counterAxisSizingMode = 'AUTO'; // Adjust sizing mode
+    frameCard.horizontalPadding = 28;
+    frameCard.verticalPadding = 28;
+    frameCard.itemSpacing = 24;
+    frameCard.fills = [{ type: 'SOLID', color: { r: 0.9333333333333333, g: 0.9490196078431373, b: 0.996078431372549 } }];
+    frameCard.strokeWeight = 1;
+    frameCard.strokes = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
+    frameCard.x = 40;
+    frameCard.y = 0;
 
     const titlePlugin = figma.createText();
-    titlePlugin.characters = `Let’s Explore Design`;
+    titlePlugin.characters = `Create Screen`;
     titlePlugin.fontName = { family: "Inter", style: "Bold" };
     titlePlugin.fontSize = 21;
     titlePlugin.textAlignVertical = 'CENTER'
     titlePlugin.textAlignHorizontal = 'CENTER'
-    titlePlugin.resize(frame.width - (28 * 2), titlePlugin.height)
-    titlePlugin.fills = [{ type: 'SOLID', color: { r: 0.04, g: 0.29, b: 0.43 } }];
-        
-    const challengeScope = figma.createText();
-    challengeScope.characters = `Create a Minimum Viable Product (MVP) or Design Shoot for ${randomBusinessModel.businessModelName} (${randomBusinessModel.businessModelCode}) that related with ${randomIndustry.industry} field, where the product will be implemented on ${randomDevice}.`;
-    challengeScope.fontName = { family: "Inter", style: "Regular" };
-    challengeScope.fontSize = 17;
-    challengeScope.textAlignVertical = 'CENTER'
-    challengeScope.textAlignHorizontal = 'CENTER'
-    challengeScope.resize(frame.width - (28 * 2), challengeScope.height);
-    challengeScope.fills = [{ type: 'SOLID', color: { r: 0.04, g: 0.29, b: 0.43 } }];
+    titlePlugin.resize(frameCard.width - (28 * 2), titlePlugin.height)
+    titlePlugin.fills = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }];
+
+    const titleField = figma.createText();
+    titleField.characters = `Field Area`;
+    titleField.fontName = { family: "Inter", style: "Medium" };
+    titleField.fontSize = 17;
+    titleField.textAlignVertical = 'CENTER'
+    titleField.textAlignHorizontal = 'LEFT'
+    titleField.resize(frameCard.width - (28 * 2), titleField.height)
+    titleField.fills = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }];
+    
+    const field = figma.createText();
+    field.characters = `${randomIndustry.industry}`;
+    field.fontName = { family: "Inter", style: "Light" };
+    field.fontSize = 15;
+    field.textAlignVertical = 'CENTER'
+    field.textAlignHorizontal = 'LEFT'
+    field.resize(frameCard.width - (28 * 2), field.height);
+    field.fills = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }];
+
+    const titleDevice = figma.createText();
+    titleDevice.characters = `Implementation`;
+    titleDevice.fontName = { family: "Inter", style: "Medium" };
+    titleDevice.fontSize = 17;
+    titleDevice.textAlignVertical = 'CENTER'
+    titleDevice.textAlignHorizontal = 'LEFT'
+    titleDevice.resize(frameCard.width - (28 * 2), titleDevice.height)
+    titleDevice.fills = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }];
+    
+    const device = figma.createText();
+    device.characters = `${randomDevice}`;
+    device.fontName = { family: "Inter", style: "Light" };
+    device.fontSize = 15;
+    device.textAlignVertical = 'CENTER'
+    device.textAlignHorizontal = 'LEFT'
+    device.resize(frameCard.width - (28 * 2), device.height);
+    device.fills = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }];
+
+    const titleScreen = figma.createText();
+    titleScreen.characters = `Screen`;
+    titleScreen.fontName = { family: "Inter", style: "Medium" };
+    titleScreen.fontSize = 17;
+    titleScreen.textAlignVertical = 'CENTER'
+    titleScreen.textAlignHorizontal = 'LEFT'
+    titleScreen.resize(frameCard.width - (28 * 2), titleDevice.height)
+    titleScreen.fills = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }];
+    
+    const screenContent = figma.createText();
+    screenContent.characters = `${randomScreen.screen}`;
+    screenContent.fontName = { family: "Inter", style: "Light" };
+    screenContent.fontSize = 15;
+    screenContent.textAlignVertical = 'CENTER'
+    screenContent.textAlignHorizontal = 'LEFT'
+    screenContent.resize(frameCard.width - (28 * 2), screenContent.height);
+    screenContent.fills = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }];
+
+    const titleModelBusiness = figma.createText();
+    titleModelBusiness.characters = `Business Model Relationship`;
+    titleModelBusiness.fontName = { family: "Inter", style: "Medium" };
+    titleModelBusiness.fontSize = 17;
+    titleModelBusiness.textAlignVertical = 'CENTER'
+    titleModelBusiness.textAlignHorizontal = 'LEFT'
+    titleModelBusiness.resize(frameCard.width - (28 * 2), titleModelBusiness.height)
+    titleModelBusiness.fills = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }];
+    
+    const modelBusiness = figma.createText();
+    modelBusiness.characters = `${randomBusinessModel.businessModelName} (${randomBusinessModel.businessModelCode})`;
+    modelBusiness.fontName = { family: "Inter", style: "Light" };
+    modelBusiness.fontSize = 15;
+    modelBusiness.textAlignVertical = 'CENTER'
+    modelBusiness.textAlignHorizontal = 'LEFT'
+    modelBusiness.resize(frameCard.width - (28 * 2), device.height);
+    modelBusiness.fills = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }];
 
     const infoBusinessModel = figma.createText();
-    infoBusinessModel.characters = `${randomBusinessModel.businessModelCode} or ${randomBusinessModel.businessModelName} is ${randomBusinessModel.description}. Example Cases: ${randomBusinessModel.cases.join(", ")}, etc. Example Companies: ${randomBusinessModel.companies.join(", ")}, etc.`;
-    infoBusinessModel.fontName = { family: "Inter", style: "Light Italic" };
-    infoBusinessModel.fontSize = 12;
-    infoBusinessModel.resize(frame.width - ((28 * 2) + 12), infoBusinessModel.height);
+    infoBusinessModel.characters = `${randomBusinessModel.description}. Example Cases: ${randomBusinessModel.cases.join(", ")}, etc.`;
+    infoBusinessModel.fontName = { family: "Inter", style: "Light" };
+    infoBusinessModel.fontSize = 15;
+    infoBusinessModel.resize(frameCard.width - ((28 * 2) + 12), infoBusinessModel.height);
     infoBusinessModel.textAutoResize = "HEIGHT";
+    infoBusinessModel.textAlignHorizontal = 'LEFT';
     infoBusinessModel.textAlignVertical = 'CENTER'
-    infoBusinessModel.textAlignHorizontal = 'CENTER';
-    infoBusinessModel.fills = [{ type: 'SOLID', color: { r: 0.04, g: 0.29, b: 0.43 } }];
+    infoBusinessModel.fills = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }];
 
-    const frameInfo = figma.createFrame();
-    frameInfo.appendChild(infoBusinessModel);
-    frameInfo.resize(frame.width - (28 * 2), infoBusinessModel.height + 10);
-    frameInfo.layoutMode = 'VERTICAL'; // or 'HORIZONTAL' based on your need
-    frameInfo.primaryAxisSizingMode = 'AUTO'; // Adjust sizing mode
-    frameInfo.counterAxisSizingMode = 'AUTO'; // Adjust sizing mode
-    frameInfo.horizontalPadding = 6;
-    frameInfo.verticalPadding = 6;
-    frameInfo.strokes = [{ type: 'SOLID', color: { r: 0.04, g: 0.29, b: 0.43 } }];
-    frameInfo.strokeAlign = 'INSIDE';
-    frameInfo.strokeWeight = 0.5;
-    frameInfo.fills = [];
-    
-    // console.log(industry[getRandomIndustryID]);
-    if (pluginMessage.random == true ) {
+    const frameField = figma.createFrame();
+    frameField.resize(frameCard.width - (28 * 2), titleField.height + field.height);
+    frameField.layoutMode = 'VERTICAL'; // or 'HORIZONTAL' based on your need
+    frameField.primaryAxisSizingMode = 'AUTO'; // Adjust sizing mode
+    frameField.counterAxisSizingMode = 'AUTO'; // Adjust sizing mode
+    frameField.fills = [];
+    frameField.itemSpacing = 4;
+    frameField.appendChild(titleField);
+    frameField.appendChild(field);
 
-      
-     await frame.appendChild(titlePlugin);
-     await frame.appendChild(challengeScope);
-     await frame.appendChild(frameInfo);
+    const frameDevice = figma.createFrame();
+    frameDevice.resize(frameCard.width - (28 * 2), titleDevice.height + device.height);
+    frameDevice.layoutMode = 'VERTICAL'; // or 'HORIZONTAL' based on your need
+    frameDevice.primaryAxisSizingMode = 'AUTO'; // Adjust sizing mode
+    frameDevice.counterAxisSizingMode = 'AUTO'; // Adjust sizing mode
+    frameDevice.fills = [];
+    frameDevice.itemSpacing = 4;
+    frameDevice.appendChild(titleDevice);
+    frameDevice.appendChild(device);
+
+    const frameScreen = figma.createFrame();
+    frameScreen.resize(frameCard.width - (28 * 2), titleScreen.height + screenContent.height);
+    frameScreen.layoutMode = 'VERTICAL'; // or 'HORIZONTAL' based on your need
+    frameScreen.primaryAxisSizingMode = 'AUTO'; // Adjust sizing mode
+    frameScreen.counterAxisSizingMode = 'AUTO'; // Adjust sizing mode
+    frameScreen.fills = [];
+    frameScreen.itemSpacing = 4;
+    frameScreen.appendChild(titleScreen);
+    frameScreen.appendChild(screenContent);
+
+    const frameModelBusiness = figma.createFrame();
+    frameModelBusiness.resize(frameCard.width - (28 * 2), titleModelBusiness.height + modelBusiness.height + infoBusinessModel.height);
+    frameModelBusiness.layoutMode = 'VERTICAL'; // or 'HORIZONTAL' based on your need
+    frameModelBusiness.primaryAxisSizingMode = 'AUTO'; // Adjust sizing mode
+    frameModelBusiness.counterAxisSizingMode = 'AUTO'; // Adjust sizing mode
+    frameModelBusiness.fills = [];
+    frameModelBusiness.itemSpacing = 4;
+    frameModelBusiness.appendChild(titleModelBusiness);
+    frameModelBusiness.appendChild(modelBusiness);
+
+    await frameCard.appendChild(titlePlugin);
+    await frameCard.appendChild(frameField);
+    await frameCard.appendChild(frameDevice);
+    await frameCard.appendChild(frameScreen);
+    await frameCard.appendChild(frameModelBusiness);
+    await frameCard.appendChild(infoBusinessModel);
+
+    const frameDecorA = figma.createFrame();
+    frameDecorA.resize(frameCard.width, frameCard.height);
+    frameDecorA.fills = [{ type: 'SOLID', color: { r: 0.6470588235294118, g: 0.7058823529411765, b: 0.9882352941176471 }  }];
+    frameDecorA.strokeWeight = 1;
+    frameDecorA.strokes = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
+    frameDecorA.x = 0;
+    frameDecorA.y = 40;
+
+    const frameDecorB = figma.createFrame();
+    frameDecorB.resize(frameCard.width, frameCard.height);
+    frameDecorB.fills = [{ type: 'SOLID', color: { r: 0.7803921568627451, g: 0.823529411764706, b: 0.996078431372549 } }];
+    frameDecorB.strokeWeight = 1;
+    frameDecorB.strokes = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
+    frameDecorB.x = 20;
+    frameDecorB.y = 20;
+
+    const frame = figma.createFrame();
+    frame.x = viewportCenterX;
+    frame.y = viewportCenterY;
+    frame.resize(frameCard.width + 40, frameCard.height + 40);
+    frame.fills = [];
+    frame.name = 'Design Spark';
+
+    await frame.appendChild(frameDecorA);
+    await frame.appendChild(frameDecorB);
+    await frame.appendChild(frameCard);
 
     await figma.currentPage.appendChild(frame);
     figma.currentPage.selection = [frame];
     figma.viewport.scrollAndZoomIntoView([frame]);
 
-    }
+    await figma.closePlugin();
+}
 
-    // Make sure to close the plugin when you're done. Otherwise the plugin will
-    // keep running, which shows the cancel button at the bottom of the screen.
-    figma.closePlugin();
+async function resultMVP() {
+    await loadRequirement();
+
+    // Get the current viewport center and zoom level
+    const viewportCenter = figma.viewport.center;
+    const viewportZoom = figma.viewport.zoom;
+
+    // Calculate the coordinates of the center point of the viewport
+    const viewportCenterX = viewportCenter.x * viewportZoom;
+    const viewportCenterY = viewportCenter.y * viewportZoom;
+
+    const randomBusinessModel = businessModel[Math.floor(Math.random() * businessModel.length)];
+    const randomIndustry = insdustries[Math.floor(Math.random() * insdustries.length)];
+    const randomDevice = devices[Math.floor(Math.random() * devices.length)];
+
+    const frameCard = figma.createFrame();
+    frameCard.resize(384, frameCard.height);
+    frameCard.layoutMode = 'VERTICAL'; // or 'HORIZONTAL' based on your need
+    frameCard.primaryAxisSizingMode = 'AUTO'; // Adjust sizing mode
+    frameCard.counterAxisSizingMode = 'AUTO'; // Adjust sizing mode
+    frameCard.horizontalPadding = 28;
+    frameCard.verticalPadding = 28;
+    frameCard.itemSpacing = 24;
+    frameCard.fills = [{ type: 'SOLID', color: { r: 0.9411764705882353, g: 0.992156862745098, b: 0.956862745098039 } }];
+    frameCard.strokeWeight = 1;
+    frameCard.strokes = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
+    frameCard.x = 40;
+    frameCard.y = 0;
+
+    const titlePlugin = figma.createText();
+    titlePlugin.characters = `Create MVP`;
+    titlePlugin.fontName = { family: "Inter", style: "Bold" };
+    titlePlugin.fontSize = 21;
+    titlePlugin.textAlignVertical = 'CENTER'
+    titlePlugin.textAlignHorizontal = 'CENTER'
+    titlePlugin.resize(frameCard.width - (28 * 2), titlePlugin.height)
+    titlePlugin.fills = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }];
+
+    const titleField = figma.createText();
+    titleField.characters = `Field Area`;
+    titleField.fontName = { family: "Inter", style: "Medium" };
+    titleField.fontSize = 17;
+    titleField.textAlignVertical = 'CENTER'
+    titleField.textAlignHorizontal = 'LEFT'
+    titleField.resize(frameCard.width - (28 * 2), titleField.height)
+    titleField.fills = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }];
+    
+    const field = figma.createText();
+    field.characters = `${randomIndustry.industry}`;
+    field.fontName = { family: "Inter", style: "Light" };
+    field.fontSize = 15;
+    field.textAlignVertical = 'CENTER'
+    field.textAlignHorizontal = 'LEFT'
+    field.resize(frameCard.width - (28 * 2), field.height);
+    field.fills = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }];
+
+    const titleDevice = figma.createText();
+    titleDevice.characters = `Implementation`;
+    titleDevice.fontName = { family: "Inter", style: "Medium" };
+    titleDevice.fontSize = 17;
+    titleDevice.textAlignVertical = 'CENTER'
+    titleDevice.textAlignHorizontal = 'LEFT'
+    titleDevice.resize(frameCard.width - (28 * 2), titleDevice.height)
+    titleDevice.fills = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }];
+    
+    const device = figma.createText();
+    device.characters = `${randomDevice}`;
+    device.fontName = { family: "Inter", style: "Light" };
+    device.fontSize = 15;
+    device.textAlignVertical = 'CENTER'
+    device.textAlignHorizontal = 'LEFT'
+    device.resize(frameCard.width - (28 * 2), device.height);
+    device.fills = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }];
+
+    const titleModelBusiness = figma.createText();
+    titleModelBusiness.characters = `Business Model Relationship`;
+    titleModelBusiness.fontName = { family: "Inter", style: "Medium" };
+    titleModelBusiness.fontSize = 17;
+    titleModelBusiness.textAlignVertical = 'CENTER'
+    titleModelBusiness.textAlignHorizontal = 'LEFT'
+    titleModelBusiness.resize(frameCard.width - (28 * 2), titleModelBusiness.height)
+    titleModelBusiness.fills = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }];
+    
+    const modelBusiness = figma.createText();
+    modelBusiness.characters = `${randomBusinessModel.businessModelName} (${randomBusinessModel.businessModelCode})`;
+    modelBusiness.fontName = { family: "Inter", style: "Light" };
+    modelBusiness.fontSize = 15;
+    modelBusiness.textAlignVertical = 'CENTER'
+    modelBusiness.textAlignHorizontal = 'LEFT'
+    modelBusiness.resize(frameCard.width - (28 * 2), device.height);
+    modelBusiness.fills = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }];
+
+    const infoBusinessModel = figma.createText();
+    infoBusinessModel.characters = `${randomBusinessModel.description}. Example Cases: ${randomBusinessModel.cases.join(", ")}, etc.`;
+    infoBusinessModel.fontName = { family: "Inter", style: "Light" };
+    infoBusinessModel.fontSize = 15;
+    infoBusinessModel.resize(frameCard.width - ((28 * 2) + 12), infoBusinessModel.height);
+    infoBusinessModel.textAutoResize = "HEIGHT";
+    infoBusinessModel.textAlignHorizontal = 'LEFT';
+    infoBusinessModel.textAlignVertical = 'CENTER'
+    infoBusinessModel.fills = [{ type: 'SOLID', color: { r: 0, g: 0, b: 0 } }];
+
+    const frameField = figma.createFrame();
+    frameField.resize(frameCard.width - (28 * 2), titleField.height + field.height);
+    frameField.layoutMode = 'VERTICAL'; // or 'HORIZONTAL' based on your need
+    frameField.primaryAxisSizingMode = 'AUTO'; // Adjust sizing mode
+    frameField.counterAxisSizingMode = 'AUTO'; // Adjust sizing mode
+    frameField.fills = [];
+    frameField.itemSpacing = 4;
+    frameField.appendChild(titleField);
+    frameField.appendChild(field);
+
+    const frameDevice = figma.createFrame();
+    frameDevice.resize(frameCard.width - (28 * 2), titleDevice.height + device.height);
+    frameDevice.layoutMode = 'VERTICAL'; // or 'HORIZONTAL' based on your need
+    frameDevice.primaryAxisSizingMode = 'AUTO'; // Adjust sizing mode
+    frameDevice.counterAxisSizingMode = 'AUTO'; // Adjust sizing mode
+    frameDevice.fills = [];
+    frameDevice.itemSpacing = 4;
+    frameDevice.appendChild(titleDevice);
+    frameDevice.appendChild(device);
+
+    const frameModelBusiness = figma.createFrame();
+    frameModelBusiness.resize(frameCard.width - (28 * 2), titleModelBusiness.height + modelBusiness.height + infoBusinessModel.height);
+    frameModelBusiness.layoutMode = 'VERTICAL'; // or 'HORIZONTAL' based on your need
+    frameModelBusiness.primaryAxisSizingMode = 'AUTO'; // Adjust sizing mode
+    frameModelBusiness.counterAxisSizingMode = 'AUTO'; // Adjust sizing mode
+    frameModelBusiness.fills = [];
+    frameModelBusiness.itemSpacing = 4;
+    frameModelBusiness.appendChild(titleModelBusiness);
+    frameModelBusiness.appendChild(modelBusiness);
+
+    await frameCard.appendChild(titlePlugin);
+    await frameCard.appendChild(frameField);
+    await frameCard.appendChild(frameDevice);
+    await frameCard.appendChild(frameModelBusiness);
+    await frameCard.appendChild(infoBusinessModel);
+
+    const frameDecorA = figma.createFrame();
+    frameDecorA.resize(frameCard.width, frameCard.height);
+    frameDecorA.fills = [{ type: 'SOLID', color: { r:0.5254901960784314, g: 0.9372549019607843, b: 0.6745098039215686 }  }];
+    frameDecorA.strokeWeight = 1;
+    frameDecorA.strokes = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
+    frameDecorA.x = 0;
+    frameDecorA.y = 40;
+
+    const frameDecorB = figma.createFrame();
+    frameDecorB.resize(frameCard.width, frameCard.height);
+    frameDecorB.fills = [{ type: 'SOLID', color: { r: 0.7333333333333333, g: 0.9686274509803922, b: 0.8156862745098039 } }];
+    frameDecorB.strokeWeight = 1;
+    frameDecorB.strokes = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 } }];
+    frameDecorB.x = 20;
+    frameDecorB.y = 20;
+
+    const frame = figma.createFrame();
+    frame.x = viewportCenterX;
+    frame.y = viewportCenterY;
+    frame.resize(frameCard.width + 40, frameCard.height + 40);
+    frame.fills = [];
+    frame.name = 'Design Spark';
+
+    await frame.appendChild(frameDecorA);
+    await frame.appendChild(frameDecorB);
+    await frame.appendChild(frameCard);
+
+    await figma.currentPage.appendChild(frame);
+    figma.currentPage.selection = [frame];
+    figma.viewport.scrollAndZoomIntoView([frame]);
+
+    await figma.closePlugin();
+    
+}
+
+// Runs this code if the plugin is run in Figma
+if (figma.editorType === 'figma') {
+  figma.showUI(__html__);
+  figma.ui.resize(300, 290);
+  
+  figma.ui.onmessage = async pluginMessage => {
+
+    const numberArray = [1,2];
+    const randomResult = numberArray[Math.floor(Math.random() * numberArray.length)];
+
+    const valueSelected = pluginMessage.value;
+
+    switch (valueSelected) {
+        case 'screen':
+            resultScreen();
+            break;
+        case 'mvp':
+            resultMVP();
+            break;
+        default:
+            if (randomResult == 1) {
+                resultScreen();
+            } else if (randomResult == 2) {
+                resultMVP();
+            }
+            break;
+    }
   };
 }
+
+// Runs this code if the plugin is run in FigJam
+if (figma.editorType === 'figjam') {
+    figma.showUI(__html__);
+    figma.ui.resize(300, 290);
+    
+    figma.ui.onmessage = async pluginMessage => {
+  
+      const numberArray = [1,2];
+      const randomResult = numberArray[Math.floor(Math.random() * numberArray.length)];
+  
+      const valueSelected = pluginMessage.value;
+  
+      switch (valueSelected) {
+          case 'screen':
+              resultScreen();
+              break;
+          case 'mvp':
+              resultMVP();
+              break;
+          default:
+              if (randomResult == 1) {
+                  resultScreen();
+              } else if (randomResult == 2) {
+                  resultMVP();
+              }
+              break;
+      }
+    };
+  }
